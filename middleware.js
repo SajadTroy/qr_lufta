@@ -8,7 +8,7 @@ export async function middleware(req) {
 
   if (url.pathname.startsWith('/admin') || url.pathname.startsWith('/product/new')) {
     if (!session?.isAdmin) {
-      url.pathname = '/admin/login';
+      url.pathname = '/login';
       return NextResponse.redirect(url);
     }
   }
