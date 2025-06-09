@@ -9,8 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "cloudinary": "^2.6.1",
     "iron-session": "^8.0.4",
     "mongoose": "^8.15.1",
+    "multer": "^2.0.1",
     "next": "15.3.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
