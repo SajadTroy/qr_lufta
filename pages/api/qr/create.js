@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import connectDB from '@/lib/db';
 import { QuickResponseCode } from '@/models'; // Adjust path to your model
 
 export default async function handler(req, res) {
@@ -7,13 +7,7 @@ export default async function handler(req, res) {
     }
 
     try {
-        // Connect to MongoDB
-        if (mongoose.connection.readyState !== 1) {
-            await mongoose.connect(process.env.MONGODB_URI, {
-                useNewUrlParser: true,
-                useUnifiedTopology: true,
-            });
-        }
+        await connectDB();
 
         const { QRKey, product, packagedDate } = req.body;
 

@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
 import { QuickResponseCode } from '@/models';
+import connectDB from '@/lib/db';
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') {
@@ -13,12 +13,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Invalid or missing qr_key' });
     }
 
-    if (mongoose.connection.readyState !== 1) {
-      await mongoose.connect(process.env.MONGODB_URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      });
-    }
+    await connectDB();
 
     const qrCode = await QuickResponseCode.findOne({ QRKey: qr_key });
 
