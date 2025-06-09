@@ -11,10 +11,10 @@ export default function AdminHome() {
   useEffect(() => {
     const scanner = new Html5QrcodeScanner('reader', {
       qrbox: {
-        width: 250,
-        height: 250,
+        width: 350,
+        height: 350,
       },
-      fps: 5,
+      fps: 60,
     });
 
     scanner.render(success, error);
