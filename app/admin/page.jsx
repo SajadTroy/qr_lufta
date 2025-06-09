@@ -13,7 +13,6 @@ export default function AdminHome() {
   const [packagedDate, setPackagedDate] = useState('');
 
   useEffect(() => {
-    // Initialize QR scanner
     const scanner = new Html5QrcodeScanner('reader', {
       qrbox: {
         width: 350,
@@ -25,29 +24,26 @@ export default function AdminHome() {
     scanner.render(success, error);
 
     function success(result) {
-      // Validate QR code URL
       const qrRegex = /^https:\/\/qr\.lufta\.in\/product\/(.+)$/;
       const match = result.match(qrRegex);
 
       if (!match) {
         setErrorMessage('The QR code is invalid');
-        return; // Keep scanner active
+        return;
       }
 
       const keyId = match[1];
-      // Check QR code existence via API
       fetch(`/api/qr/check?qr_key=${encodeURIComponent(keyId)}`)
         .then((res) => res.json())
         .then((data) => {
           if (data.exists) {
             setErrorMessage('QR code already registered');
             setQrExists(true);
-            return; // Keep scanner active
+            return;
           }
-          // QR code doesn't exist, fetch products and show form
           setScanResult(result);
           setQrExists(false);
-          scanner.clear(); // Stop scanner to show form
+          scanner.clear();
           fetch('/api/products')
             .then((res) => res.json())
             .then((products) => setProducts(products))
@@ -66,7 +62,7 @@ export default function AdminHome() {
       console.warn('QR scan error:', err);
     }
 
-    return () => scanner.clear(); // Cleanup on unmount
+    return () => scanner.clear();
   }, []);
 
   const handleFormSubmit = async (e) => {
@@ -74,11 +70,9 @@ export default function AdminHome() {
     setErrorMessage(null);
 
     try {
-      // Extract keyId from scanResult
       const qrRegex = /^https:\/\/qr\.lufta\.in\/product\/(.+)$/;
       const keyId = scanResult.match(qrRegex)[1];
 
-      // Send data to create API
       const response = await fetch('/api/qr/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -94,15 +88,13 @@ export default function AdminHome() {
         throw new Error(data.error || 'Failed to create QR code');
       }
 
-      // Success: Reset state and restart scanner
       setScanResult(null);
       setSelectedProduct('');
       setPackagedDate('');
       setErrorMessage('QR code created successfully!');
-      // Restart scanner (re-render by resetting state)
       setTimeout(() => {
         setErrorMessage(null);
-      }, 2000); // Clear success message after 2 seconds
+      }, 2000);
     } catch (err) {
       console.error('Error creating QR code:', err);
       setErrorMessage(err.message || 'Failed to create QR code');
