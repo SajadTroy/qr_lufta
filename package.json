@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "cloudinary": "^2.6.1",
+    "html5-qrcode": "^2.3.8",
     "iron-session": "^8.0.4",
     "jsqr": "^1.4.0",
     "mongoose": "^8.15.1",
