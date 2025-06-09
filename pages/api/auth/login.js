@@ -9,7 +9,7 @@ export default async function handler(req, res) {
 
     const { username, password } = req.body;
 
-    if (username === "admin" && password === "S7vJxQ2gY9rTnB5eMpKdW4aZL8fUoX1c") {
+    if (username === "admin" && password === process.env.SESSION_SECRET) {
         const session = await getIronSession(req, res, sessionOptions);
         session.isAdmin = true;
         session.username = username;
