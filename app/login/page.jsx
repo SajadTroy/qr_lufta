@@ -20,7 +20,7 @@ export default function LoginPage() {
     });
 
     if (res.ok) {
-      router.push('/admin');
+      router.push('/admin/dashboard');
     } else {
       const data = await res.json();
       setError(data.message || 'Login failed');
